@@ -1,8 +1,8 @@
 # wsspell
 
 Tools for the spelling dictionaries of WordStar 7.0 for DOS: a reader and a compiler for
-the Microlytics `SPLMNnnn.DCT` format, and an installer that adds Ukrainian and Russian
-(cp1125) spelling modules next to the English one.
+the Microlytics `SPLMNnnn.DCT` format, a cp1125 patch for `WS.EXE`, and an installer
+that adds Ukrainian and Russian (cp1125) spelling modules next to the English one.
 
 - `SPLMN_FORMAT.md` — the binary format, reverse engineered from the dictionaries and the
   speller overlays (engines 6.00 and 7.51). Fields not yet understood are listed there.
@@ -13,6 +13,8 @@ the Microlytics `SPLMNnnn.DCT` format, and an installer that adds Ukrainian and 
   matching dictionary trailer).
 - `wsspl.py` — patches the original `WSSPL001.OVR` for cp1125 (case tables, punctuation,
   phonetic key).
+- `patch1125.py` — switches the code page tables of `WS.EXE` (letters, case, sort order)
+  from cp437 to cp1125 or cp866, so WordStar treats Cyrillic letters as letters.
 - `langmod.py` — builds `SPLMNccc.DCT` and `WSSPLccc.OVR` and adds the language to the
   language table of `WS.EXE`.
 - `vesum.py`, `opcorpora.py` — extract word forms from the Ukrainian and Russian sources.
@@ -29,13 +31,14 @@ from the sources below.
 - `unicorn` (only for the engine tests)
 - `pymorphy3-dicts-ru` (only for the Russian word list)
 - WordStar 7.0 for DOS (Rev. D). Its `DICT\WSSPL001.OVR` is the input of `wsspl.py`.
-  To type and check Cyrillic, `WS.EXE` itself must use cp1125 case and letter tables;
-  that is a separate patch of the WordStar User Area (see `PATCH.TXT` of WordStar) and
-  is not part of this project.
+- A cp1125 keyboard driver and screen font for DOS (not part of this project).
 
 ## Building and installing
 
 ```sh
+# WS.EXE: cp1125 letter, case and sort tables (keeps WS.437)
+python patch1125.py C:/WS/WS.EXE
+
 # Ukrainian: VESUM (brown-uk/dict_uk) v6.8.6
 gh release download v6.8.6 -R brown-uk/dict_uk -p dict_corp_vis.txt.bz2
 python -X utf8 vesum.py dict_corp_vis.txt.bz2 > uk_forms.txt
@@ -50,6 +53,9 @@ python -X utf8 langmod.py C:/WS/WS.EXE --forms ru_forms.txt --code 007 --name Ru
 In a document, `.la 380` or `.la 007` switches the spelling language and `.la 001`
 switches back to English. `--default` makes the new language the default one. The first
 run keeps the original EXE as `WS.BAK`.
+
+`python patch1125.py --listing WS.EXE` writes `PATCH1125.TXT`, the same tables in the
+style of WordStar's `PATCH.TXT`, for entering them by hand with WSCHANGE.
 
 A plain word list can also be compiled directly:
 `python splmnbuild.py OUT.DCT MAIN.txt [ABBR.txt] [--cp cp1125]` (UTF-8, one word per line).
