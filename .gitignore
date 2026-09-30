@@ -1,0 +1,6 @@
+__pycache__/
+*.DCT
+*.OVR
+*.txt
+*.bz2
+*.json
