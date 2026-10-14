@@ -159,7 +159,7 @@ Make a backup copy of WS.EXE first (WS.437), then either
     below, or
   - python patch1125.py WS.EXE  -- writes all five tables, checks
     the old cp437 bytes, keeps WS.437; a second run changes nothing
-    (https://github.com/Lumenman/wsspell).
+    (https://github.com/Lumenman/ws7spell).
 
 In the WS.EXE file each table lies at its User Area address + E00h
 (lglchr 28A3h, movchr 28C7h, upcase 28EBh, locase 29EBh, colate 2AEBh).

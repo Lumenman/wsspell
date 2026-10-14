@@ -1,8 +1,10 @@
-# wsspell
+# ws7spell
 
 Tools for the spelling dictionaries of WordStar 7.0 for DOS: a reader and a compiler for
 the Microlytics `SPLMNnnn.DCT` format, a cp1125 patch for `WS.EXE`, and an installer
 that adds Ukrainian and Russian (cp1125) spelling modules next to the English one.
+
+For WordStar 4.0 see [ws4spell](https://github.com/Lumenman/ws4spell).
 
 - `SPLMN_FORMAT.md` — the binary format, reverse engineered from the dictionaries and the
   speller overlays (engines 6.00 and 7.51). Fields not yet understood are listed there.
